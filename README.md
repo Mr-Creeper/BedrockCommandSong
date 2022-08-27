@@ -1,0 +1,10 @@
+# BedrockCommandSong
+一个将mid音乐文件转为mcfunction结构的乐谱播放的指令音乐
+
+新手屑作
+
+使用时需要在同目录下创建名为Midi与Function的文件
+
+先将需要转换的Mid放入Midi文件夹
+
+打开程序后选择文件转换完成就可在Function文件夹找到生成好的Function
