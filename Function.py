@@ -2,6 +2,7 @@ import os
 from mido import MidiFile
 
 time = 0
+tempo = 500000#设置默认拍数（后面大概率会被改，主要是防报错）
 lastTime = 0#当前播放音符与上一个播放音符相隔的时间
 xyzMax=[1,254,1]
 b1=0
@@ -17,7 +18,6 @@ def timeToBlock(time):
     global ticks_per_beat,tempo#将每拍为多少time与拍数设为公共变量
     beat = time / ticks_per_beat#计算当前音符为多少拍
     s = tempo * beat / 1000000#将拍数与拍频相除获得秒速
-    s*=1.8
     if s % 0.1 >= 0.05 :
         s = s // 0.1 + 1
     elif s % 0.1 < 0.05:
@@ -73,7 +73,7 @@ def infoToCommand(note):
 '''
 def writeFunction(command):
     global functionName
-    file=open(f"D:\summoncommandmusic\Function\{functionName}.mcfunction","a")
+    file=open(f"\Function\{functionName}.mcfunction","a")
     file.write(f"{command}\n")
     file.close()
 
@@ -86,7 +86,7 @@ def writeFunction(command):
 def chooseMidi():
     n=0
     midiFile={}
-    for filename in os.listdir(r'D:\summoncommandmusic\Midi'):
+    for filename in os.listdir(r'\Midi'):
         midiFile[n]=filename
         print(f"{n}:{filename}")
         n += 1
@@ -110,9 +110,9 @@ By：Mr Creeper''')
 midiName=chooseMidi()
 print(f"你选择的是{midiName}\n请输入生成的Function文件名（无需打后缀）：",end='')
 functionName = str(input())
-f=open(f"D:\summoncommandmusic\Function\{functionName}.mcfunction","w")#将function替换掉
+f=open(f"\{functionName}.mcfunction","w")#将function替换掉
 f.close()
-mid = MidiFile(f"D:\summoncommandmusic\Midi\{midiName}")
+mid = MidiFile(f"\Midi\{midiName}")
 ticks_per_beat = mid.ticks_per_beat#获取每拍为多少time
 musicLong = mid.length
 #print(mid.ticks_per_beat)
@@ -154,14 +154,6 @@ while time < 2:
     lastTime=0
     detect = [False, 0]
     if time == 1:
-        if xyzMax[0] * xyzMax[2] * 255 <32767:
-            writeFunction(f"fill ~1 1 ~1 ~{xyzMax[0]} 254 ~{xyzMax[2]} wool")
-        else:
-            partN = xyzMax[0] * xyzMax[2] * 255 //32767 +1
-            partLong = (xyzMax[2] // partN)+1
-            partRemain = partN
-            while partRemain >0:
-                writeFunction(f"fill ~1 1 ~{partLong*(partN-partRemain)+1} ~{xyzMax[0]} 254 ~{partLong*(partN-partRemain+1)} wool")
-                partRemain-=1
+        writeFunction(f"fill ~1 1 ~1 ~{xyzMax[0]} 254 ~{xyzMax[2]} wool")
         writeFunction(f"fill ~1 255 ~1 ~{xyzMax[0]} 255 ~{xyzMax[2]-1} wool 1")
         writeFunction(f"fill ~1 255 ~{xyzMax[2]} ~{xyzMax[0]} 255 ~{xyzMax[2]} wool 2")
