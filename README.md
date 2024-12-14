@@ -1,4 +1,4 @@
-# BedrockCommandSong
+# BedrockMinecraftCommandMusic
 Bedrock Minecraft only
 
 将Midi放置于文件夹启动程序就可以进行转换
